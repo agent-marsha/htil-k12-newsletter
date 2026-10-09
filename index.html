@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Signal — HTIL Newsletter (Draft)</title>
+<style>
+  :root{
+    --accent:#9E1B32;
+    --accent-soft:#C98A94;
+    --ink:#151515;
+    --muted:#5c5c5c;
+    --faint:#8a8a8a;
+    --rule:#d9d9d9;
+    --rule-dark:#bfbfbf;
+    --tint:#f6f1f1;
+    --paper:#ffffff;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#e9e9e9;
+    font-family:var(--sans);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet-wrap{padding:26px 0 60px}
+  .page{
+    width:8.5in;
+    height:11in;
+    background:var(--paper);
+    margin:0 auto 26px;
+    padding:0.62in 0.68in 0.5in;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.18);
+  }
+  .page:last-child{margin-bottom:0}
+
+  /* ---- shared type ---- */
+  .kicker{
+    font-family:var(--sans);
+    font-size:7.6pt;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+  }
+  .kicker.neutral{color:var(--muted)}
+  h1,h2,h3,h4{font-family:var(--serif);font-weight:700;margin:0;color:var(--ink)}
+  p{margin:0 0 6px;font-size:9.3pt;line-height:1.5;color:#232323}
+  .lead{font-size:10pt;line-height:1.5;color:#1c1c1c}
+  .small{font-size:8.2pt;line-height:1.45;color:var(--muted)}
+  a{color:var(--accent);text-decoration:none}
+  .rule{height:1px;background:var(--rule);margin:9px 0}
+  .rule-accent{height:2.5px;background:var(--accent);margin:0}
+
+  /* ---- masthead ---- */
+  .mast-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+  .nameplate{
+    font-family:var(--serif);
+    font-size:47pt;
+    line-height:.92;
+    letter-spacing:-.015em;
+    font-weight:700;
+  }
+  .nameplate .thin{font-weight:400;font-style:italic;color:var(--accent)}
+  .tagline{font-family:var(--sans);font-size:8.6pt;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+  .issue-meta{text-align:right;font-family:var(--sans);font-size:7.6pt;color:var(--faint);line-height:1.6;letter-spacing:.06em;text-transform:uppercase}
+
+  /* ---- layouts ---- */
+  .cols{column-count:2;column-gap:26px;column-fill:balance}
+  .cols-3{column-count:3;column-gap:22px}
+  .cols p{orphans:2;widows:2}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .grid-2-1{display:grid;grid-template-columns:1.62fr 1fr;gap:0 26px}
+  .grid-1-2{display:grid;grid-template-columns:1fr 1.62fr;gap:0 26px}
+
+  h1.head{font-size:23pt;line-height:1.05;letter-spacing:-.01em;margin:2px 0 6px}
+  h1.head.sm{font-size:18pt}
+  h2.sec{font-size:13.5pt;line-height:1.15;margin:0 0 4px}
+  h3.sub{font-size:10.5pt;line-height:1.2;margin:10px 0 3px}
+  .standfirst{font-family:var(--serif);font-size:12.4pt;line-height:1.42;color:#2a2a2a;margin:2px 0 8px}
+  .eyebrow{font-family:var(--sans);font-size:7.4pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:3px}
+  .dropcap::first-letter{
+    font-family:var(--serif);float:left;font-size:31pt;line-height:.78;
+    padding:3px 6px 0 0;color:var(--accent);font-weight:700;
+  }
+  .byline{font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+
+  /* ---- stat band ---- */
+  .statband{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin:12px 0 0}
+  .stat{padding:9px 12px 10px;border-left:1px solid var(--rule)}
+  .stat:first-child{border-left:none;padding-left:0}
+  .stat .big{font-family:var(--serif);font-size:19pt;line-height:1;color:var(--accent);font-weight:700}
+  .stat .lab{font-size:7.3pt;line-height:1.35;color:var(--muted);margin-top:4px;letter-spacing:.02em}
+
+  /* ---- boxes ---- */
+  .box{background:var(--tint);border-top:2px solid var(--accent);padding:11px 13px 12px}
+  .box h3{margin-top:0}
+  .box ul{margin:5px 0 0;padding-left:15px}
+  .box li{font-size:8.6pt;line-height:1.45;margin-bottom:3.5px}
+  .outline{border:1px solid var(--rule);padding:11px 13px 12px}
+  .outline h3{margin-top:0}
+
+  ul.pts{margin:6px 0 0;padding-left:15px}
+  ul.pts li{font-size:9.1pt;line-height:1.46;margin-bottom:4px;color:#232323}
+  ul.tight li{margin-bottom:2.5px}
+
+  .numlist{counter-reset:n;list-style:none;margin:6px 0 0;padding:0}
+  .numlist li{position:relative;padding-left:26px;font-size:9pt;line-height:1.42;margin-bottom:6px}
+  .numlist li::before{
+    counter-increment:n;content:counter(n);
+    position:absolute;left:0;top:-1px;width:17px;height:17px;
+    background:var(--accent);color:#fff;border-radius:50%;
+    font-family:var(--sans);font-size:7.6pt;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .numlist li b{font-family:var(--serif);font-size:9.6pt}
+
+  /* ---- tables ---- */
+  table{width:100%;border-collapse:collapse;font-size:8.3pt;margin-top:5px}
+  th{text-align:left;font-family:var(--sans);font-size:7.1pt;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:5px 7px 4px}
+  td{padding:5px 7px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.36;color:#232323}
+  td.g{font-weight:600;color:var(--ink)}
+  tr:last-child td{border-bottom:none}
+
+  /* ---- figures ---- */
+  figure{margin:0}
+  figcaption{font-size:7.5pt;line-height:1.4;color:var(--faint);margin-top:5px;padding-top:4px;border-top:1px solid var(--rule)}
+  svg{display:block;width:100%;height:auto}
+
+  /* ---- footer ---- */
+  .pagefoot{
+    position:absolute;left:0.68in;right:0.68in;bottom:0.3in;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+    border-top:1px solid var(--rule);padding-top:6px;
+  }
+  .pagefoot .b{color:var(--accent);font-weight:700}
+  .folio{position:absolute;right:0.68in;top:0.42in;font-size:8pt;color:var(--faint);letter-spacing:.08em}
+
+  .contactgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;margin-top:4px}
+  .kv{font-size:8.6pt;line-height:1.6}
+  .kv b{display:block;font-family:var(--sans);font-size:7.1pt;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1px}
+  .pull{
+    font-family:var(--serif);font-size:14pt;line-height:1.28;color:var(--accent);
+    border-left:3px solid var(--accent);padding:2px 0 2px 13px;margin:9px 0;
+  }
+  .tag{display:inline-block;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);padding:1.5px 6px;margin-bottom:6px}
+  .draft-stamp{
+    position:absolute;right:0.68in;top:0.5in;font-size:7pt;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);
+    padding:2px 7px;transform:rotate(0deg);
+  }
+
+  /* ---- mobile / screen-narrow ---- */
+  @media screen and (max-width:860px){
+    body{background:#fff}
+    .sheet-wrap{padding:0}
+    .page{width:100%;height:auto;min-height:0;margin:0 0 0;padding:20px 18px 30px;box-shadow:none;border-bottom:8px solid #eee}
+    .pagefoot{position:static;margin-top:22px}
+    .cols,.cols-3{column-count:1}
+    .grid2,.grid-2-1,.grid-1-2,.statband,.contactgrid{grid-template-columns:1fr}
+    .stat{border-left:none;border-top:1px solid var(--rule);padding-left:0}
+    .nameplate{font-size:34pt}
+  }
+
+  /* ---- print / PDF ---- */
+  @page{size:8.5in 11in;margin:0}
+  @media print{
+    body{background:#fff}
+    .sheet-wrap{padding:0}
+    .page{
+      width:8.5in;height:11in;margin:0;box-shadow:none;
+      page-break-after:always;break-after:page;overflow:hidden;
+    }
+    .page:last-child{page-break-after:auto;break-after:auto}
+  }
+</style>
+</head>
+<body>
+<div class="sheet-wrap">
+
+  <!-- ============================ PAGE 1 ============================ -->
+  <section class="page">
+    <div class="rule-accent"></div>
+    <div class="mast-top" style="margin-top:9px">
+      <div class="kicker">Human–Technology Interaction Lab &nbsp;·&nbsp; University of Alabama</div>
+      <div class="draft-stamp">Draft for review</div>
+    </div>
+    <div class="nameplate">THE <span class="thin">Signal</span></div>
+    <div class="tagline">K–12 Education in Physiological Computing &nbsp;|&nbsp; Research from the Human–Technology Interaction Lab, Dept. of Computer Science, The University of Alabama</div>
+    <div class="rule"></div>
+
+    <div class="grid-2-1">
+      <div>
+        <div class="eyebrow">Lead story</div>
+        <h1 class="head">Students Become the&nbsp;Technology</h1>
+        <div class="standfirst">HTIL's K–12 program turns brainwaves and muscle signals into a hands-on route into computer science — building the tools, curricula, and competitions that let students read, program, and control their own physiology.</div>
+      </div>
+      <div style="text-align:right;padding-top:4px" class="issue-meta">
+        Draft Issue<br>
+        Fall 2026<br>
+        Vol. 1 · No. 1<br>
+        <span style="color:var(--accent)">htilua.org</span>
+      </div>
+    </div>
+
+    <div class="cols">
+      <p class="lead dropcap">Physiological computing asks a simple but unfamiliar question: what if the computer's input device were your own body? In classrooms across Alabama, students place a sensor on their forearm or slip on an EEG headband and watch a live signal appear on screen — a muscle's electrical activity, a brain's changing rhythms. Then they write the logic that turns that signal into action: a cursor that moves, a robot that walks, a drone that lifts off.</p>
+
+      <p>That real-time feedback loop is what makes the work stick. Students are not reading about technology from the outside; for the length of a lesson, they <em>are</em> the sensor. Curiosity about "can I control it?" does the motivational work that worksheets usually have to do.</p>
+
+      <p>What started as a research question about brain–computer interfaces has grown into HTIL's largest education effort — a decade of classroom studies, a block-based programming environment used by students as young as 13, a national competition circuit, and an affordable hardware kit designed to put a working biosignal station in a school for the price of a textbook.</p>
+
+      <p>This issue is a snapshot of that work: the software, the curriculum, the hardware, the teachers, and what comes next.</p>
+    </div>
+
+    <div class="statband">
+      <div class="stat"><div class="big">~$7.5M</div><div class="lab">Research funding supporting the lab's physiological computing and K–12 education programs</div></div>
+      <div class="stat"><div class="big">13</div><div class="lab">Age of the youngest students building their own BCI applications with HTIL software</div></div>
+      <div class="stat"><div class="big">800+</div><div class="lab">Media features and placements, including Forbes, The New York Times, and PBS NewsHour</div></div>
+      <div class="stat"><div class="big">Under $25</div><div class="lab">Target cost of a complete classroom biosignal station built on the lab's open EMG design</div></div>
+    </div>
+
+    <div class="grid-1-2" style="margin-top:14px">
+      <div class="outline">
+        <div class="eyebrow">In this issue</div>
+        <ul class="pts tight" style="margin-top:4px">
+          <li><b>NeuroBlock</b> — block-based BCI programming for beginners</li>
+          <li><b>Curriculum</b> — muscle signals in the math classroom</li>
+          <li><b>Hardware</b> — an EMG station for the price of a textbook</li>
+          <li><b>Teachers</b> — the professional-development pipeline</li>
+          <li><b>Impact</b> — publications, partners, and what's next</li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow">Why it matters</div>
+        <p class="small" style="margin-top:2px">A single biosignal activity spans computer science, biology, data science, machine learning, signal processing, and engineering design at once. Few classroom investments cover that many standards from one piece of hardware — and because every student's data is genuinely their own, there is no single right answer to copy.</p>
+        <p class="small">Physiological computing education is a field HTIL has helped define. Where most outreach programs introduce neuroscience or robotics in isolation, this work sits at the intersection of both — and publishes the classroom evidence alongside the tools.</p>
+      </div>
+    </div>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Human–Technology Interaction Lab · UA</span>
+      <span>Page 1 of 6</span>
+    </div>
+  </section>
+
+  <!-- ============================ PAGE 2 ============================ -->
+  <section class="page">
+    <div class="folio">Page 2</div>
+    <div class="eyebrow">Software &nbsp;·&nbsp; NeuroBlock</div>
+    <h1 class="head sm">Block-Based Brain–Computer Interfaces, Built for the First Try</h1>
+    <div class="standfirst">NeuroBlock lets a student assemble a working brain–computer interface the way they would assemble a Scratch project — snapping logic, math, and hardware blocks together and running it against a live brain or muscle signal.</div>
+    <div class="rule"></div>
+
+    <div class="grid-2-1">
+      <div class="cols">
+        <p>NeuroBlock is a visual programming environment in the Scratch tradition, extended so that the signals feeding a student's program come from real sensors rather than a keyboard. Students drag blocks for logic, loops, math, and data processing, then connect them to blocks that read physiological data and drive connected hardware. No prior neuroscience background is required — the environment does the signal handling so the student can focus on the program.</p>
+
+        <p>It is deliberately hardware-agnostic at its core. Today NeuroBlock reads EEG from the <b>Muse 2</b> headband — surfacing Delta, Theta, Alpha, Beta, and Gamma bands for students to reason about — and muscle activity from the <b>OpenBCI Ganglion</b>. Output blocks control physical devices, including the <b>VEX AIM</b> robot and the <b>Tello</b> drone.</p>
+
+        <p>The pedagogical bet is that a competition is the best curriculum. NeuroBlock's flagship event, the <b>Brain Drone Race</b>, asks competitors to out-focus one another: the electrical signals from their brains, not a joystick, steer the drone. It is a format that reads instantly to an audience and has carried the work into mainstream coverage.</p>
+      </div>
+
+      <div>
+        <div class="box">
+          <h3>NeuroBlock at a glance</h3>
+          <table style="margin-top:3px">
+            <tr><td class="g">Interface</td><td>Block-based, Scratch-like</td></tr>
+            <tr><td class="g">EEG input</td><td>Muse 2 — Delta, Theta, Alpha, Beta, Gamma</td></tr>
+            <tr><td class="g">EMG input</td><td>OpenBCI Ganglion</td></tr>
+            <tr><td class="g">Outputs</td><td>VEX AIM robot · Tello drone · on-screen apps</td></tr>
+            <tr><td class="g">Youngest users</td><td>Students as young as 13</td></tr>
+            <tr><td class="g">Distribution</td><td>Open source · request access at htilua.org/neuroblock</td></tr>
+          </table>
+        </div>
+        <div class="box" style="margin-top:12px;background:#fff;border-top-color:var(--ink)">
+          <h3 style="color:var(--accent)">Selected publications</h3>
+          <ul class="pts tight" style="margin-top:5px">
+            <li><i>Changing Minds: Exploring Brain–Computer Interface Experiences with High School Students</i></li>
+            <li><i>Brains and Blocks: Introducing Novice Programmers to Brain–Computer Interface Application Development</i></li>
+            <li><i>Brain–Computer Interface for Novice Programmers</i></li>
+            <li><i>NeuroBlock: A block-based programming approach to neurofeedback application development</i></li>
+          </ul>
+          <p class="small" style="margin-top:7px;border-top:1px solid var(--rule);padding-top:6px">Full reference list and PDFs: <b>htilua.org/neuroblock</b></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" style="margin:14px 0 10px"></div>
+    <div class="eyebrow">From signal to program</div>
+    <figure style="margin-top:6px">
+      <svg viewBox="0 0 900 150" role="img" aria-label="Pipeline diagram: sensor, signal conditioning, NeuroBlock program, hardware output">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 z" fill="#9E1B32"></path>
+          </marker>
+        </defs>
+        <g font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#151515">
+          <rect x="1" y="34" width="150" height="60" fill="#f6f1f1" stroke="#bfbfbf"></rect>
+          <text x="76" y="59" text-anchor="middle" font-weight="700">Sensor</text>
+          <text x="76" y="76" text-anchor="middle" font-size="10.5" fill="#5c5c5c">EEG headband /</text>
+          <text x="76" y="88" text-anchor="middle" font-size="10.5" fill="#5c5c5c">EMG electrodes</text>
+
+          <rect x="187" y="34" width="150" height="60" fill="#ffffff" stroke="#bfbfbf"></rect>
+          <text x="262" y="59" text-anchor="middle" font-weight="700">Conditioning</text>
+          <text x="262" y="76" text-anchor="middle" font-size="10.5" fill="#5c5c5c">Filter, band split,</text>
+          <text x="262" y="88" text-anchor="middle" font-size="10.5" fill="#5c5c5c">feature extraction</text>
+
+          <rect x="373" y="34" width="160" height="60" fill="#f6f1f1" stroke="#9E1B32" stroke-width="2"></rect>
+          <text x="453" y="59" text-anchor="middle" font-weight="700" fill="#9E1B32">NeuroBlock program</text>
+          <text x="453" y="76" text-anchor="middle" font-size="10.5" fill="#5c5c5c">Logic · loops · math ·</text>
+          <text x="453" y="88" text-anchor="middle" font-size="10.5" fill="#5c5c5c">thresholds students write</text>
+
+          <rect x="569" y="34" width="150" height="60" fill="#ffffff" stroke="#bfbfbf"></rect>
+          <text x="644" y="59" text-anchor="middle" font-weight="700">Output</text>
+          <text x="644" y="76" text-anchor="middle" font-size="10.5" fill="#5c5c5c">Robot · drone ·</text>
+          <text x="644" y="88" text-anchor="middle" font-size="10.5" fill="#5c5c5c">on-screen visual</text>
+
+          <rect x="755" y="34" width="144" height="60" fill="#f6f1f1" stroke="#bfbfbf"></rect>
+          <text x="827" y="59" text-anchor="middle" font-weight="700">Feedback</text>
+          <text x="827" y="76" text-anchor="middle" font-size="10.5" fill="#5c5c5c">Student sees the</text>
+          <text x="827" y="88" text-anchor="middle" font-size="10.5" fill="#5c5c5c">loop close, adjusts</text>
+
+          <line x1="151" y1="64" x2="185" y2="64" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar)"></line>
+          <line x1="337" y1="64" x2="371" y2="64" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar)"></line>
+          <line x1="533" y1="64" x2="567" y2="64" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar)"></line>
+          <line x1="719" y1="64" x2="753" y2="64" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar)"></line>
+        </g>
+        <path d="M827,96 C827,130 76,130 76,96" fill="none" stroke="#8a8a8a" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#ar)"></path>
+        <text x="451" y="140" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#8a8a8a" font-style="italic">The loop students learn to reason about — and the whole point of the exercise</text>
+      </svg>
+      <figcaption>The physiological computing pipeline students build against. HTIL's software handles the conditioning so beginners can start at the program.</figcaption>
+    </figure>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Software</span>
+      <span>Page 2 of 6</span>
+    </div>
+  </section>
+
+  <!-- ============================ PAGE 3 ============================ -->
+  <section class="page">
+    <div class="folio">Page 3</div>
+    <div class="eyebrow">Curriculum &nbsp;·&nbsp; K–12</div>
+    <h1 class="head sm">From Clenched Fists to Linear Functions</h1>
+    <div class="standfirst">The lab's curriculum work puts a biosignal in the middle of the math lesson. Students generate the data with their own bodies, then do the math on it — counting, graphing, comparing fractions, fitting functions.</div>
+    <div class="rule"></div>
+
+    <div class="cols">
+      <p>Physiological computing earns its classroom time by making abstract mathematics physical. A student who squeezes a sensor and watches the number rise is doing measurement before they have the word for it. A class that collects five peak values from five clenches and turns them into a bar graph is doing data analysis where every bar has a story. When the same data is used to compute a slope — a peak value divided by the time it took to get there — the function is something the student felt happen.</p>
+
+      <p>HTIL has mapped this approach across every grade band, from counting in kindergarten to vectors and conditional probability in high school, aligning each activity to state standards. The progression is deliberate: lower grades work with counting, pattern, and measurement; middle grades with data, ratios, and rate of change; upper grades with model fitting, classification, and inference.</p>
+
+      <p class="pull">"Every data point is personal. There is no single right answer for a classmate to copy."</p>
+
+      <p><b>PhysioML</b> carries the idea into machine learning. It is a web-based environment where students apply ML concepts to real-time physiological data rather than to a pre-packaged dataset — the same features-and-labels reasoning they meet in a textbook, but grounded in a signal their own body produced.</p>
+
+      <p><b>PhysioBots</b> connects muscle signals directly to robot control, so the payoff of a well-chosen threshold is a machine that moves.</p>
+    </div>
+
+    <div class="rule" style="margin:12px 0 8px"></div>
+    <div class="eyebrow">Sample activities across the grade bands</div>
+    <table>
+      <thead>
+        <tr><th style="width:15%">Grade band</th><th style="width:25%">Math focus</th><th style="width:60%">Physiological computing activity</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="g">K–2</td><td>Counting &amp; patterns</td><td>Each muscle clench is one count — students count and compare their own totals. Squeeze-squeeze-rest becomes an AAB pattern they create and copy.</td></tr>
+        <tr><td class="g">K–2</td><td>Measurement</td><td>Compare a relaxed reading against a squeezed reading as a direct magnitude comparison of a live, self-generated biosignal.</td></tr>
+        <tr><td class="g">3–5</td><td>Data &amp; graphing</td><td>Collect peak values from repeated contractions and build a bar graph or line plot of their own muscle data — real biological variability included.</td></tr>
+        <tr><td class="g">3–5</td><td>Fractions</td><td>Maximal contraction is the whole; students squeeze at one-half, one-quarter, and three-quarters of it, building fraction sense through proprioception and visual feedback together.</td></tr>
+        <tr><td class="g">6–8</td><td>Statistics</td><td>Take 100+ samples of a "steady" contraction and compute mean, median, and range — then discuss biological noise as genuine variation, not error.</td></tr>
+        <tr><td class="g">6–8</td><td>Functions &amp; slope</td><td>Slope = (peak − baseline) ÷ rise time. Students see the ramp and compute the rate at the same moment they feel it.</td></tr>
+        <tr><td class="g">9–12</td><td>Function families</td><td>Record fast-twitch, sustained-hold, and fatigue contractions, then compare fitted models by R² to ask which function actually describes a process.</td></tr>
+        <tr><td class="g">9–12</td><td>Conditional probability</td><td>A cursor-control game yields P(hit | intended up) and P(hit | intended down) — students test whether their performance is meaningfully above chance.</td></tr>
+        <tr><td class="g">9–12</td><td>Vectors &amp; optimization</td><td>Four-channel signals become gesture vectors classified by distance; biofeedback turns "satisfy two constraints at once" into finding a feasible state in their own body.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="small" style="margin-top:9px">Activities are written to sit alongside — not replace — the worksheets an Alabama classroom already uses. They are the lesson where the data is real.</p>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Curriculum</span>
+      <span>Page 3 of 6</span>
+    </div>
+  </section>
+
+  <!-- ============================ PAGE 4 ============================ -->
+  <section class="page">
+    <div class="folio">Page 4</div>
+    <div class="eyebrow">Hardware &nbsp;·&nbsp; MioPod</div>
+    <h1 class="head sm">A Classroom Biosignal Station for the Price of a Textbook</h1>
+    <div class="standfirst">Commercial EMG equipment runs from a few hundred to a few thousand dollars per unit — a non-starter for most schools. The lab's open ESP32-based design targets a complete station for under $25.</div>
+    <div class="rule"></div>
+
+    <div class="grid-2-1">
+      <div class="cols">
+        <p>The lab's affordable EMG platform — <b>MioPod</b> — starts from a hard constraint: the hardware has to be cheap enough that a teacher can kit out a classroom without a grant, and simple enough that a student can build and debug it. The design is built around an ESP32 module (roughly $4 in parts at classroom quantities), which supplies the ADC, wireless radio, and processing headroom for a live biosignal dashboard without any accompanying computer beyond a laptop or Chromebook.</p>
+
+        <p>On the analog side, the front end follows the classic instrumentation chain: a pre-amplifier, a band-pass filter tuned to the physiological EMG range of roughly 20–500&nbsp;Hz, a notch filter to reject mains noise, and an envelope detector so a signal that swings positive and negative becomes a reading a student can plot. That chain is not hidden from learners — building and testing it is part of the lesson, and students can see exactly why each stage exists.</p>
+
+        <p>From there the ESP32 samples the signal, filters it digitally, and streams it wirelessly to a browser dashboard or to the same block-based environment students use elsewhere. The result is a station that covers signal acquisition, sensor design, filtering, wireless data, and visualization — and that a school can afford to own thirty of.</p>
+      </div>
+
+      <div>
+        <div class="box">
+          <h3>Why build our own</h3>
+          <ul class="pts tight" style="margin-top:4px">
+            <li>Commercial EMG sensors: <b>$200–$2,000+</b> per unit</li>
+            <li>MioPod target BOM: <b>≈$4</b> in parts</li>
+            <li>Complete station target: <b>under $25</b></li>
+            <li>Open design — students can inspect and rebuild every stage</li>
+            <li>Wireless by default — no tethered lab bench required</li>
+          </ul>
+        </div>
+        <div class="box" style="margin-top:12px">
+          <h3>Where it's been tested</h3>
+          <p class="small" style="margin-top:2px">The EMG platform has been validated in Alabama's Black Belt schools, and the lab is extending the model with interested partners in <b>Florida</b>, <b>Georgia</b>, <b>Illinois</b>, and the <b>D.C.–Maryland–Virginia</b> region.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" style="margin:14px 0 9px"></div>
+    <div class="eyebrow">The signal chain students build</div>
+    <figure style="margin-top:6px">
+      <svg viewBox="0 0 900 132" role="img" aria-label="Analog EMG front-end chain followed by ESP32 digitisation and wireless streaming">
+        <defs>
+          <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 z" fill="#9E1B32"></path>
+          </marker>
+        </defs>
+        <g font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#151515">
+          <rect x="1" y="30" width="128" height="56" fill="#f6f1f1" stroke="#bfbfbf"></rect>
+          <text x="65" y="54" text-anchor="middle" font-weight="700">Electrodes</text>
+          <text x="65" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">Ag/AgCl on skin</text>
+
+          <rect x="159" y="30" width="128" height="56" fill="#fff" stroke="#bfbfbf"></rect>
+          <text x="223" y="54" text-anchor="middle" font-weight="700">Pre-amplifier</text>
+          <text x="223" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">instrumentation amp</text>
+
+          <rect x="317" y="30" width="120" height="56" fill="#fff" stroke="#bfbfbf"></rect>
+          <text x="377" y="54" text-anchor="middle" font-weight="700">Band-pass</text>
+          <text x="377" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">20–500 Hz</text>
+
+          <rect x="467" y="30" width="110" height="56" fill="#fff" stroke="#bfbfbf"></rect>
+          <text x="522" y="54" text-anchor="middle" font-weight="700">Notch</text>
+          <text x="522" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">mains rejection</text>
+
+          <rect x="607" y="30" width="120" height="56" fill="#fff" stroke="#bfbfbf"></rect>
+          <text x="667" y="54" text-anchor="middle" font-weight="700">Envelope</text>
+          <text x="667" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">rectify &amp; smooth</text>
+
+          <rect x="757" y="30" width="142" height="56" fill="#f6f1f1" stroke="#9E1B32" stroke-width="2"></rect>
+          <text x="828" y="54" text-anchor="middle" font-weight="700" fill="#9E1B32">ESP32 → wireless</text>
+          <text x="828" y="70" text-anchor="middle" font-size="9.8" fill="#5c5c5c">sample, filter, stream</text>
+
+          <line x1="129" y1="58" x2="157" y2="58" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar2)"></line>
+          <line x1="287" y1="58" x2="315" y2="58" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar2)"></line>
+          <line x1="437" y1="58" x2="465" y2="58" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar2)"></line>
+          <line x1="577" y1="58" x2="605" y2="58" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar2)"></line>
+          <line x1="727" y1="58" x2="755" y2="58" stroke="#9E1B32" stroke-width="1.6" marker-end="url(#ar2)"></line>
+        </g>
+        <line x1="1" y1="100" x2="899" y2="100" stroke="#d9d9d9" stroke-width="1"></line>
+        <text x="1" y="118" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#8a8a8a" font-style="italic">Analog front end — the stage students wire, filter, and debug</text>
+        <text x="899" y="118" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#8a8a8a" font-style="italic">Digital — the stage students program</text>
+      </svg>
+      <figcaption>Four-stage analog conditioning feeds the ESP32's ADC; the board then filters digitally and streams to a browser dashboard or block-based program.</figcaption>
+    </figure>
+
+    <div class="rule" style="margin:15px 0 9px"></div>
+    <div class="eyebrow">Signal sources in the same classroom budget</div>
+    <table>
+      <thead>
+        <tr><th style="width:42%">Option</th><th style="width:20%">Typical cost</th><th style="width:38%">Best for</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="g">MioPod — lab design, ESP32-based</td><td class="g">≈$4 in parts</td><td>A station a school can afford to own thirty of; full-station target under $25</td></tr>
+        <tr><td class="g">Pre-assembled entry-level EMG module</td><td>~$10</td><td>Fastest path to a working classroom demo</td></tr>
+        <tr><td class="g">Through-hole soldering EMG kit</td><td>~$7</td><td>A build-your-own-sensor lab where assembly is the lesson</td></tr>
+        <tr><td class="g">Higher-fidelity EMG module</td><td>~$31</td><td>Student research projects needing cleaner signal</td></tr>
+        <tr><td class="g">Commercial EMG system</td><td>$200–$2,000+</td><td>Clinical and research labs — out of reach at class scale</td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:8px">Ranges reflect the lab's survey of open-source and commercial EMG hardware; per-unit prices fall further at classroom quantity.</p>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Hardware</span>
+      <span>Page 4 of 6</span>
+    </div>
+  </section>
+
+  <!-- ============================ PAGE 5 ============================ -->
+  <section class="page">
+    <div class="folio">Page 5</div>
+    <div class="eyebrow">Teachers &amp; Outreach</div>
+    <h1 class="head sm">Building the Teacher Pipeline First</h1>
+    <div class="standfirst">A tool a teacher cannot troubleshoot is a tool a teacher abandons. Most of the lab's K–12 effort goes into the people who carry the technology into a classroom — and keep it running.</div>
+    <div class="rule"></div>
+
+    <div class="cols">
+      <p>Biosignals are noisy. A sensor that worked in a workshop can misbehave on a Monday morning with thirty students, and the difference between a program that spreads and one that stalls is whether a teacher can diagnose the problem. HTIL treats that as a design constraint, not an afterthought: professional development, plain-language materials, and support for the first three lessons matter as much as the software itself.</p>
+
+      <p>The lab's teacher-facing work runs through a set of funded programs. An <b>NSF RET Site</b> trains Alabama STEM teachers in sensing technologies, bringing educators into the lab to work on research-grade equipment they then take back to their schools. That site is itself the successor to earlier teacher-training work that has reached on the order of two dozen pre- and in-service teachers, alongside a decade of summer camps and neuro-camps that have put physiological computing in front of roughly 800 K–12 students.</p>
+
+      <p>The <b>Alabama Power Foundation</b> supports expansion specifically into West Alabama and the Black Belt — the rural and historically underserved communities where a low-cost, self-contained station has the most to offer, and where NSF broadening-participation priorities point. The lab's NSF CAREER award takes the same question directly: how do students in rural schools engage with physiological interfaces when the technology comes to them?</p>
+    </div>
+
+    <div class="rule" style="margin:12px 0 9px"></div>
+    <div class="grid2">
+      <div>
+        <h3 class="sub" style="margin-top:0">What teachers get</h3>
+        <ul class="pts">
+          <li>A start-up path that does not assume a neuroscience background</li>
+          <li>Lesson sequences with a clear first, second, and third lesson</li>
+          <li>Guidance on the failure modes that actually happen in class — bad contact, motion artifact, mains noise</li>
+          <li>Hardware students can see into, so a fault is a puzzle rather than a mystery</li>
+          <li>Curriculum mapped to state standards, so the lesson earns its slot in the year</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="sub" style="margin-top:0">Where the work reaches</h3>
+        <table style="margin-top:3px">
+          <tr><td class="g">Alabama</td><td>Pilot classrooms and camps statewide; statewide rollout in discussion with the state education agency</td></tr>
+          <tr><td class="g">Black Belt &amp; West Alabama</td><td>Expansion funded by the Alabama Power Foundation</td></tr>
+          <tr><td class="g">Florida · Georgia · Illinois</td><td>Partner interest from teacher connections</td></tr>
+          <tr><td class="g">D.C.–Maryland–Virginia</td><td>Strategic target for national scale</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box" style="margin-top:14px">
+      <h3>The un-failable first lesson</h3>
+      <p class="small" style="margin-top:3px">The lab's classroom design assumes the first session must succeed for every student, not just the confident ones. The recommended opener is a mirror, not a challenge: put the sensor on, watch your own signal move, and see how blinking, clenching, or relaxing changes the trace. Nothing to get right, nothing to fail — but by the end of the lesson every student understands what a biosignal is, from the inside.</p>
+    </div>
+
+    <div class="statband" style="margin-top:16px">
+      <div class="stat"><div class="big">~800</div><div class="lab">K–12 students reached through camps and classroom programs over roughly a decade</div></div>
+      <div class="stat"><div class="big">~25</div><div class="lab">Pre- and in-service teachers trained in sensing technologies through the lab's PD programs</div></div>
+      <div class="stat"><div class="big">10+</div><div class="lab">Years of classroom research behind the current tools and curriculum</div></div>
+      <div class="stat"><div class="big">700+</div><div class="lab">Public schools across Alabama — the reach a statewide rollout would put within range</div></div>
+    </div>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Teachers &amp; Outreach</span>
+      <span>Page 5 of 6</span>
+    </div>
+  </section>
+
+  <!-- ============================ PAGE 6 ============================ -->
+  <section class="page">
+    <div class="folio">Page 6</div>
+    <div class="eyebrow">Impact &amp; Next</div>
+    <h1 class="head sm">What's Next for K–12 at HTIL</h1>
+    <div class="standfirst">The lab's education work is entering a phase where the question shifts from "does this work in a classroom?" to "how does it reach every classroom that wants it?"</div>
+    <div class="rule"></div>
+
+    <div class="grid-2-1">
+      <div class="cols">
+        <p>Three things are converging. Consumer-grade brain and muscle sensors have dropped below the price point where a school can reasonably buy them. Funding agencies are actively prioritizing broadening participation in computing. And public familiarity with neurotechnology — for better and worse — has never been higher, which makes the classroom conversation easier to start and more important to get right.</p>
+
+        <p>HTIL's position is unusual: the research, the software, the hardware, and the competition format all sit in one lab, and all of it has already been in front of students. That makes the next steps concrete rather than speculative — widening the platforms the software runs on, formalizing the curriculum and teacher certification around it, and turning the Brain Drone Race from an event into a competition circuit that schools can enter the way they enter a robotics league.</p>
+
+        <p>It also brings responsibilities. Recording physiological data from minors raises real privacy and ethics questions, and the lab's approach is to treat those as design requirements from the start — keeping data handling transparent, minimizing what leaves a student's device, and framing the whole enterprise as <em>physiological literacy</em>: learning how your own body works, rather than upgrading it.</p>
+      </div>
+      <div>
+        <div class="box">
+          <h3>Get involved</h3>
+          <div class="kv" style="margin-top:6px">
+            <b>Request software access</b>
+            htilua.org/neuroblock
+            <div style="height:7px"></div>
+            <b>Bring a pilot to your school</b>
+            crawford@cs.ua.edu
+            <div style="height:7px"></div>
+            <b>Partner on research</b>
+            HTIL, Dept. of Computer Science<br>The University of Alabama
+            <div style="height:7px"></div>
+            <b>Phone</b>
+            (205) 348-6378
+          </div>
+        </div>
+        <div class="outline" style="margin-top:12px">
+          <h3>Lab direction</h3>
+          <p class="small" style="margin-top:2px">HTIL is directed by <b>Dr. Chris Crawford</b>, Associate Professor of Computer Science at The University of Alabama. The lab's work spans brain–computer interfaces, human–robot interaction, and physiological computing education.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" style="margin:14px 0 9px"></div>
+    <div class="eyebrow">The research behind the classroom</div>
+    <table>
+      <thead>
+        <tr><th style="width:44%">Selected funded programs</th><th style="width:56%">Focus</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="g">NSF CAREER Award — $798K</td><td>Engaging rural students with physiological interfaces</td></tr>
+        <tr><td class="g">NSF — $1.1M</td><td>Elementary physiological computing curriculum</td></tr>
+        <tr><td class="g">NSF RET Site — $602K</td><td>Training Alabama STEM teachers in sensing technologies</td></tr>
+        <tr><td class="g">NSF (Co-PI) — $1.2M</td><td>Sensing for data science: web platform for classroom data work</td></tr>
+        <tr><td class="g">NIH (Co-PI) — $2.5M</td><td>Sensor-based adaptive interventions</td></tr>
+        <tr><td class="g">Alabama Power Foundation — $300K</td><td>West Alabama / Black Belt educational expansion</td></tr>
+        <tr><td class="g">Intel — $300K</td><td>Brain–robot interaction</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule" style="margin:13px 0 0"></div>
+    <div class="grid2" style="margin-top:10px">
+      <p class="small">This newsletter is a working draft prepared for internal review. Figures, program descriptions, and quotes should be verified against current project documentation before any external distribution.</p>
+      <p class="small" style="text-align:right">The Signal — K–12 Education in Physiological Computing<br>Human–Technology Interaction Lab · The University of Alabama<br><span style="color:var(--accent)">htilua.org</span></p>
+    </div>
+
+    <div class="pagefoot">
+      <span>The Signal · HTIL Newsletter</span>
+      <span class="b">Impact &amp; Next</span>
+      <span>Page 6 of 6</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
